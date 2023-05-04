@@ -1,88 +1,65 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Multiplication Table Quiz</title>
+    <meta charset="UTF-8">
+    <title>Multiplication Game</title>
   </head>
-  <body onload="startGame()">
-    <h1>Multiplication Table Quiz</h1>
-    <p>Type your answer in the box and press enter.</p>
-    <div id="question"></div>
-    <input id="answerInput" type="text" onkeydown="checkAnswer(event)">
-    <p id="score"></p>
-    <p id="time"></p>
-
+  <body>
+    <h1>Multiplication Game</h1>
+    <p>Type your answer in the box below and press Enter.</p>
+    <p id="question"></p>
+    <input type="text" id="answer" autofocus>
     <script>
-      let currentQuestion = 1;
-      let correctAnswers = 0;
-      let startTime = 0;
-      let endTime = 0;
-      let timeIntervalId = 0;
-      let timeElapsed = 0;
-      let questionIntervalId = 0;
+      const MIN_MULTIPLIER_1 = 0;
+      const MAX_MULTIPLIER_1 = 10;
+      const MIN_MULTIPLIER_2 = 6;
+      const MAX_MULTIPLIER_2 = 9;
+      const NUM_QUESTIONS = 10;
 
-      function startGame() {
-        currentQuestion = 1;
-        correctAnswers = 0;
-        startTime = Date.now();
-        timeIntervalId = setInterval(updateTime, 10);
+      let numCorrect = 0;
+      let numQuestions = 0;
+      let startTime = 0;
+      let question = '';
+
+      function init() {
+        document.getElementById('answer').addEventListener('keyup', checkAnswer);
         askQuestion();
       }
 
       function askQuestion() {
-        let multiplier1 = Math.floor(Math.random() * 11);
-        let multiplier2 = Math.floor(Math.random() * 4) + 6;
-        let answer = multiplier1 * multiplier2;
-        document.getElementById("question").innerHTML =
-          "Question " + currentQuestion + ": " + multiplier1 + " x " + multiplier2;
-        document.getElementById("answerInput").value = "";
-        document.getElementById("answerInput").focus();
-        questionIntervalId = setInterval(function() {
-          if (document.getElementById("answerInput").value == answer) {
-            clearInterval(questionIntervalId);
-            currentQuestion++;
-            correctAnswers++;
-            if (currentQuestion <= 10) {
-              askQuestion();
-            } else {
-              endGame();
-            }
+        if (numQuestions < NUM_QUESTIONS) {
+          const multiplier1 = Math.floor(Math.random() * (MAX_MULTIPLIER_1 - MIN_MULTIPLIER_1 + 1) + MIN_MULTIPLIER_1);
+          const multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
+          question = `What is ${multiplier1} x ${multiplier2}?`;
+          document.getElementById('question').textContent = question;
+          numQuestions++;
+          document.getElementById('answer').value = '';
+          document.getElementById('answer').focus();
+          if (numQuestions === 1) {
+            startTime = new Date().getTime();
           }
-        }, 10);
-      }
-
-      function endGame() {
-        clearInterval(timeIntervalId);
-        endTime = Date.now();
-        timeElapsed = (endTime - startTime) / 1000;
-        document.getElementById("question").innerHTML = "Quiz complete!";
-        document.getElementById("answerInput").disabled = true;
-        document.getElementById("score").innerHTML =
-          "You answered " + correctAnswers + " out of 10 questions correctly.";
-        document.getElementById("time").innerHTML =
-          "Time elapsed: " + timeElapsed.toFixed(1) + " seconds.";
-      }
-
-      function updateTime() {
-        let currentTime = Date.now();
-        timeElapsed = (currentTime - startTime) / 1000;
-        document.getElementById("time").innerHTML =
-          "Time elapsed: " + timeElapsed.toFixed(1) + " seconds.";
+        } else {
+          const endTime = new Date().getTime();
+          const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+          document.getElementById('question').textContent = `You got ${numCorrect} out of ${NUM_QUESTIONS} questions correct in ${timeTaken} seconds.`;
+          document.getElementById('answer').removeEventListener('keyup', checkAnswer);
+        }
       }
 
       function checkAnswer(event) {
-        if (event.key === "Enter") {
-          clearInterval(questionIntervalId);
-          currentQuestion++;
-          if (document.getElementById("answerInput").value == answer) {
-            correctAnswers++;
-          }
-          if (currentQuestion <= 10) {
+        if (event.keyCode === 13) {
+          const answer = parseInt(document.getElementById('answer').value);
+          if (!isNaN(answer)) {
+            const [multiplier1, multiplier2] = question.match(/\d+/g).map(Number);
+            if (answer === multiplier1 * multiplier2) {
+              numCorrect++;
+            }
             askQuestion();
-          } else {
-            endGame();
           }
         }
       }
+
+      init();
     </script>
   </body>
 </html>
