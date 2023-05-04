@@ -47,7 +47,7 @@
         if (numQuestions < NUM_QUESTIONS) {
           const multiplier1 = Math.floor(Math.random() * (MAX_MULTIPLIER_1 - MIN_MULTIPLIER_1 + 1) + MIN_MULTIPLIER_1);
           const multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
-          question = `What is ${multiplier1} x ${multiplier2}?`;
+          question = `Koliko je ${multiplier1} x ${multiplier2}?`;
           document.getElementById('question').textContent = question;
           numQuestions++;
           document.getElementById('answer').value = '';
