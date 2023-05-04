@@ -1,89 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Multiplication Quiz</title>
-    <style>
-      /* CSS styles go here */
-      #question {
-        font-size: 24px;
-        margin-bottom: 10px;
-      }
-      #answerInput {
-        font-size: 24px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-right: 10px;
-      }
-      button {
-        font-size: 18px;
-        padding: 5px 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Multiplication Quiz</h1>
-    <p>Answer 10 multiplication questions as quickly as you can!</p>
-    <p id="question"></p>
-    <input type="number" id="answerInput" placeholder="Type your answer here" autofocus>
-    <button onclick="askQuestion()">Submit</button>
-    <p id="feedback"></p>
-    <p id="result"></p>
-    <script>
-      /* JavaScript code goes here */
-      let counter = 0;
-      let score = 0;
-      let startTime;
-      let feedback = document.getElementById("feedback");
+<head>
+	<title>Multiplication Tables Quiz</title>
+</head>
+<body>
+	<h1>Multiplication Tables Quiz</h1>
+	<button onclick="startQuiz()">Start Quiz</button>
+	<p id="question"></p>
+	<input type="text" id="answer" placeholder="Enter your answer here">
+	<button onclick="submitAnswer()">Submit Answer</button>
+	<p id="result"></p>
 
-      function startTimer() {
-        // set the start time
-        startTime = Date.now();
-        askQuestion();
-      }
+	<script>
+		var numCorrect = 0;
+		var numQuestions = 10;
+		var questionCount = 0;
+		var startTime;
 
-      function askQuestion() {
-        if (counter < 10) {
-          // generate two random numbers
-          let num1 = Math.floor(Math.random() * 11);
-          let num2 = Math.floor(Math.random() * 4) + 6;
-          let correctAnswer = num1 * num2;
+		function startQuiz() {
+			document.getElementById("question").innerHTML = "Question " + (questionCount+1) + ": " + generateQuestion();
+			startTime = new Date().getTime();
+		}
 
-          // display the question
-          let question = document.getElementById("question");
-          question.innerHTML = num1 + " x " + num2 + " = ";
+		function submitAnswer() {
+			var answer = document.getElementById("answer").value.trim();
+			if (answer.length === 0 || isNaN(answer)) {
+				alert("Please enter a valid number.");
+				return;
+			}
+			if (parseInt(answer) === currentAnswer) {
+				numCorrect++;
+			}
+			questionCount++;
+			if (questionCount === numQuestions) {
+				endQuiz();
+			} else {
+				document.getElementById("question").innerHTML = "Question " + (questionCount+1) + ": " + generateQuestion();
+				document.getElementById("answer").value = "";
+				setTimeout(function() {
+					document.getElementById("question").innerHTML += " (timeout)";
+					questionCount++;
+					if (questionCount === numQuestions) {
+						endQuiz();
+					} else {
+						document.getElementById("question").innerHTML = "Question " + (questionCount+1) + ": " + generateQuestion();
+					}
+				}, 10000);
+			}
+		}
 
-          // get the user's answer
-          let userAnswer = document.getElementById("answerInput").value;
-          if (userAnswer == correctAnswer) {
-            score++;
-            feedback.innerHTML = "Correct!";
-          } else {
-            feedback.innerHTML = "Incorrect! The correct answer is " + correctAnswer + ".";
-          }
+		function generateQuestion() {
+			var num1 = Math.floor(Math.random() * 11);
+			var num2 = Math.floor(Math.random() * 4) + 6;
+			currentAnswer = num1 * num2;
+			return num1 + " x " + num2 + " = ?";
+		}
 
-          // clear the input field
-          document.getElementById("answerInput").value = "";
-
-          // increment the counter
-          counter++;
-
-          // ask the next question after 1 second
-          setTimeout(askQuestion, 1000);
-        } else {
-          // stop the timer and display the score
-          clearInterval(timerId);
-          let timeTaken = (Date.now() - startTime) / 1000;
-          let result = document.getElementById("result");
-          result.innerHTML = "You got " + score + " out of 10 in " + timeTaken.toFixed(1) + " seconds.";
-        }
-      }
-    </script>
-  </body>
+		function endQuiz() {
+			var endTime = new Date().getTime();
+			var timeDiff = (endTime - startTime) / 1000;
+			document.getElementById("question").innerHTML = "Quiz completed in " + timeDiff.toFixed(1) + " seconds. You answered " + numCorrect + " out of " + numQuestions + " questions correctly.";
+			document.getElementById("answer").style.display = "none";
+			document.getElementById("result").style.display = "none";
+		}
+	</script>
+</body>
 </html>
