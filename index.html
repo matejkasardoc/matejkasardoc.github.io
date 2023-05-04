@@ -40,7 +40,7 @@
   let question = '';
 
   function init() {
-    document.getElementById('answer').addEventListener('keyup', checkAnswer);
+    document.getElementById('answer').addEventListener('keyup', function(event) { if (event.keyCode === 13) { checkAnswer(); } });
     document.getElementById('tryAgainBtn').addEventListener('click', resetGame);
     askQuestion();
   }
