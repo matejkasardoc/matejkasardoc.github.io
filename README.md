@@ -1,4 +1,6 @@
+<!DOCTYPE html>
 <html>
+<!--
   <head>
     <meta charset="UTF-8">
     <title>Test poznavanja poštevanke</title>
@@ -89,5 +91,24 @@
 7. razred največ - sekund <br>
 8. razred največ - sekund <br>
 9. razred največ - sekund <br>
-  </body>
+  </body> -->
+
+
+
+<head></head>
+<body>
+<div id="app">
+  <button @click="startQuiz" v-if="!isQuizRunning">Start Quiz</button>
+  <div v-if="isQuizRunning">
+    <div>
+      <p>{{ currentProblem }}</p>
+      <input type="text" v-model="answer" @keyup.enter="checkAnswer" />
+    </div>
+    <div v-if="isFinished">
+      <p>You got {{ score }} out of 10 correct in {{ timeElapsed }} seconds!</p>
+    </div>
+  </div>
+</div>
+<script src="YOUR_SCRIPT_URL_HERE"></script>
+</body>
 </html>
