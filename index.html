@@ -1,68 +1,88 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Multiplication Tables Quiz</title>
-</head>
-<body>
-	<h1>Multiplication Tables Quiz</h1>
-	<button onclick="startQuiz()">Start Quiz</button>
-	<p id="question"></p>
-	<input type="text" id="answer" placeholder="Enter your answer here">
-	<button onclick="submitAnswer()">Submit Answer</button>
-	<p id="result"></p>
+  <head>
+    <title>Multiplication Table Quiz</title>
+  </head>
+  <body onload="startGame()">
+    <h1>Multiplication Table Quiz</h1>
+    <p>Type your answer in the box and press enter.</p>
+    <div id="question"></div>
+    <input id="answerInput" type="text" onkeydown="checkAnswer(event)">
+    <p id="score"></p>
+    <p id="time"></p>
 
-	<script>
-		var numCorrect = 0;
-		var numQuestions = 10;
-		var questionCount = 0;
-		var startTime;
+    <script>
+      let currentQuestion = 1;
+      let correctAnswers = 0;
+      let startTime = 0;
+      let endTime = 0;
+      let timeIntervalId = 0;
+      let timeElapsed = 0;
+      let questionIntervalId = 0;
 
-		function startQuiz() {
-			document.getElementById("question").innerHTML = "Question " + (questionCount+1) + ": " + generateQuestion();
-			startTime = new Date().getTime();
-		}
+      function startGame() {
+        currentQuestion = 1;
+        correctAnswers = 0;
+        startTime = Date.now();
+        timeIntervalId = setInterval(updateTime, 10);
+        askQuestion();
+      }
 
-		function submitAnswer() {
-			var answer = document.getElementById("answer").value.trim();
-			if (answer.length === 0 || isNaN(answer)) {
-				alert("Please enter a valid number.");
-				return;
-			}
-			if (parseInt(answer) === currentAnswer) {
-				numCorrect++;
-			}
-			questionCount++;
-			if (questionCount === numQuestions) {
-				endQuiz();
-			} else {
-				document.getElementById("question").innerHTML = "Question " + (questionCount+1) + ": " + generateQuestion();
-				document.getElementById("answer").value = "";
-				setTimeout(function() {
-					document.getElementById("question").innerHTML += " (timeout)";
-					questionCount++;
-					if (questionCount === numQuestions) {
-						endQuiz();
-					} else {
-						document.getElementById("question").innerHTML = "Question " + (questionCount+1) + ": " + generateQuestion();
-					}
-				}, 10000);
-			}
-		}
+      function askQuestion() {
+        let multiplier1 = Math.floor(Math.random() * 11);
+        let multiplier2 = Math.floor(Math.random() * 4) + 6;
+        let answer = multiplier1 * multiplier2;
+        document.getElementById("question").innerHTML =
+          "Question " + currentQuestion + ": " + multiplier1 + " x " + multiplier2;
+        document.getElementById("answerInput").value = "";
+        document.getElementById("answerInput").focus();
+        questionIntervalId = setInterval(function() {
+          if (document.getElementById("answerInput").value == answer) {
+            clearInterval(questionIntervalId);
+            currentQuestion++;
+            correctAnswers++;
+            if (currentQuestion <= 10) {
+              askQuestion();
+            } else {
+              endGame();
+            }
+          }
+        }, 10);
+      }
 
-		function generateQuestion() {
-			var num1 = Math.floor(Math.random() * 11);
-			var num2 = Math.floor(Math.random() * 4) + 6;
-			currentAnswer = num1 * num2;
-			return num1 + " x " + num2 + " = ?";
-		}
+      function endGame() {
+        clearInterval(timeIntervalId);
+        endTime = Date.now();
+        timeElapsed = (endTime - startTime) / 1000;
+        document.getElementById("question").innerHTML = "Quiz complete!";
+        document.getElementById("answerInput").disabled = true;
+        document.getElementById("score").innerHTML =
+          "You answered " + correctAnswers + " out of 10 questions correctly.";
+        document.getElementById("time").innerHTML =
+          "Time elapsed: " + timeElapsed.toFixed(1) + " seconds.";
+      }
 
-		function endQuiz() {
-			var endTime = new Date().getTime();
-			var timeDiff = (endTime - startTime) / 1000;
-			document.getElementById("question").innerHTML = "Quiz completed in " + timeDiff.toFixed(1) + " seconds. You answered " + numCorrect + " out of " + numQuestions + " questions correctly.";
-			document.getElementById("answer").style.display = "none";
-			document.getElementById("result").style.display = "none";
-		}
-	</script>
-</body>
+      function updateTime() {
+        let currentTime = Date.now();
+        timeElapsed = (currentTime - startTime) / 1000;
+        document.getElementById("time").innerHTML =
+          "Time elapsed: " + timeElapsed.toFixed(1) + " seconds.";
+      }
+
+      function checkAnswer(event) {
+        if (event.key === "Enter") {
+          clearInterval(questionIntervalId);
+          currentQuestion++;
+          if (document.getElementById("answerInput").value == answer) {
+            correctAnswers++;
+          }
+          if (currentQuestion <= 10) {
+            askQuestion();
+          } else {
+            endGame();
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
