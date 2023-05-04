@@ -3,12 +3,32 @@
   <head>
     <meta charset="UTF-8">
     <title>Multiplication Game</title>
+    <style>
+      #question-container {
+        display: flex;
+        align-items: center;
+      }
+      #question {
+        margin-right: 10px;
+      }
+      #answer-container {
+        display: flex;
+        align-items: center;
+      }
+      #answer {
+        margin-left: 10px;
+      }
+    </style>
   </head>
   <body>
     <h1>Multiplication Game</h1>
     <p>Type your answer in the box below and press Enter.</p>
-    <p id="question"></p>
-    <input type="text" id="answer" autofocus>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="answer-container">
+        <input type="text" id="answer" autofocus>
+      </div>
+    </div>
     <script>
       const MIN_MULTIPLIER_1 = 0;
       const MAX_MULTIPLIER_1 = 10;
@@ -41,8 +61,21 @@
         } else {
           const endTime = new Date().getTime();
           const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
-          document.getElementById('question').textContent = `You got ${numCorrect} out of ${NUM_QUESTIONS} questions correct in ${timeTaken} seconds.`;
-          document.getElementById('answer').removeEventListener('keyup', checkAnswer);
+          document.getElementById('question-container').remove();
+          const result = document.createElement('p');
+          result.textContent = `You got ${numCorrect} out of ${NUM_QUESTIONS} questions correct in ${timeTaken} seconds.`;
+          document.body.appendChild(result);
+          const tryAgainButton = document.createElement('button');
+          tryAgainButton.textContent = 'Try Again';
+          tryAgainButton.addEventListener('click', () => {
+            numCorrect = 0;
+            numQuestions = 0;
+            startTime = 0;
+            askQuestion();
+            document.body.removeChild(result);
+            document.body.removeChild(tryAgainButton);
+          });
+          document.body.appendChild(tryAgainButton);
         }
       }
 
