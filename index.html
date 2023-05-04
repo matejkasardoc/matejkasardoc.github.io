@@ -80,14 +80,14 @@
         }
       }
 
-      function resetGame() {
+    function resetGame() {
   numCorrect = 0;
   numQuestions = 0;
   startTime = 0;
   question = '';
   document.getElementById('score').style.display = 'none';
-  document.getElementById('answer').value = '';
   askQuestion();
+  location.reload(); // Reload the page
 }
 
       init();
