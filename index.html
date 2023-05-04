@@ -20,7 +20,7 @@
     <p>V okvirček vpiši svoj odgovor in pritisni na vnosnico (tipko Enter).</p>
     <div class="question-container">
       <p class="question" id="question"></p>
-      <input type="text" id="answer" autofocus>
+      <input type="text" id="answer" onkeyup="event.keyCode === 13 ? checkAnswer() : null" autofocus>
     </div>
     <div id="score" style="display: none;">
       <p>Pravilno si odgovoril na <span id="numCorrect"></span> od <span id="numQuestions"></span> vprašanj v <span id="timeTaken"></span> sekundah.</p>
