@@ -6,17 +6,11 @@
     <style>
       #question-container {
         display: flex;
+        flex-direction: row;
         align-items: center;
       }
       #question {
         margin-right: 10px;
-      }
-      #answer-container {
-        display: flex;
-        align-items: center;
-      }
-      #answer {
-        margin-left: 10px;
       }
     </style>
   </head>
@@ -25,10 +19,9 @@
     <p>Type your answer in the box below and press Enter.</p>
     <div id="question-container">
       <p id="question"></p>
-      <div id="answer-container">
-        <input type="text" id="answer" autofocus>
-      </div>
+      <input type="text" id="answer" autofocus>
     </div>
+    <button id="try-again" style="display:none;">Try Again</button>
     <script>
       const MIN_MULTIPLIER_1 = 0;
       const MAX_MULTIPLIER_1 = 10;
@@ -61,21 +54,9 @@
         } else {
           const endTime = new Date().getTime();
           const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
-          document.getElementById('question-container').remove();
-          const result = document.createElement('p');
-          result.textContent = `You got ${numCorrect} out of ${NUM_QUESTIONS} questions correct in ${timeTaken} seconds.`;
-          document.body.appendChild(result);
-          const tryAgainButton = document.createElement('button');
-          tryAgainButton.textContent = 'Try Again';
-          tryAgainButton.addEventListener('click', () => {
-            numCorrect = 0;
-            numQuestions = 0;
-            startTime = 0;
-            askQuestion();
-            document.body.removeChild(result);
-            document.body.removeChild(tryAgainButton);
-          });
-          document.body.appendChild(tryAgainButton);
+          document.getElementById('question').textContent = `You got ${numCorrect} out of ${NUM_QUESTIONS} questions correct in ${timeTaken} seconds.`;
+          document.getElementById('answer').removeEventListener('keyup', checkAnswer);
+          document.getElementById('try-again').style.display = 'block';
         }
       }
 
@@ -91,6 +72,20 @@
           }
         }
       }
+
+      function resetGame() {
+        numCorrect = 0;
+        numQuestions = 0;
+        startTime = 0;
+        question = '';
+        document.getElementById('try-again').style.display = 'none';
+        document.getElementById('question').textContent = '';
+        document.getElementById('answer').value = '';
+        document.getElementById('answer').addEventListener('keyup', checkAnswer);
+        askQuestion();
+      }
+
+      document.getElementById('try-again').addEventListener('click', resetGame);
 
       init();
     </script>
