@@ -1,63 +1,89 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Multiplication Table Quiz</title>
-</head>
-<body>
-  <h1>Multiplication Table Quiz</h1>
-
-  <button onclick="startQuiz()">Start Quiz</button>
-  <div id="quiz-container"></div>
-
-  <button id="submit-answer" style="display:none;" onclick="submitAnswer()">Submit</button>
-
-  <script>
-    let startTime;
-    let correctAnswers = 0;
-    let questionNumber = 1;
-    let currentMultiplier;
-    let currentMultiplicand;
-    const quizContainer = document.getElementById("quiz-container");
-    
-    function startQuiz() {
-      quizContainer.innerHTML = "Welcome to the multiplication table quiz!";
-      startTime = new Date();
-      askQuestion();
-      document.getElementById("submit-answer").style.display = "block";
-    }
-
-    function askQuestion() {
-      currentMultiplier = Math.floor(Math.random() * 11);
-      currentMultiplicand = Math.floor(Math.random() * 4) + 6;
-      quizContainer.innerHTML = `Question ${questionNumber}: What is ${currentMultiplier} x ${currentMultiplicand}?`;
-      questionNumber++;
-    }
-
-    function submitAnswer() {
-      const answerInput = document.getElementById("answer-input");
-      const userAnswer = answerInput.value;
-      if (userAnswer == currentMultiplier * currentMultiplicand) {
-        quizContainer.innerHTML = "Correct!";
-        correctAnswers++;
-      } else {
-        quizContainer.innerHTML = `Sorry, the correct answer is ${currentMultiplier * currentMultiplicand}.`;
+  <head>
+    <meta charset="utf-8">
+    <title>Multiplication Quiz</title>
+    <style>
+      /* CSS styles go here */
+      #question {
+        font-size: 24px;
+        margin-bottom: 10px;
       }
-      answerInput.value = "";
-      if (questionNumber > 10) {
-        endQuiz();
-      } else {
+      #answerInput {
+        font-size: 24px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+      button {
+        font-size: 18px;
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Multiplication Quiz</h1>
+    <p>Answer 10 multiplication questions as quickly as you can!</p>
+    <p id="question"></p>
+    <input type="number" id="answerInput" placeholder="Type your answer here" autofocus>
+    <button onclick="askQuestion()">Submit</button>
+    <p id="feedback"></p>
+    <p id="result"></p>
+    <script>
+      /* JavaScript code goes here */
+      let counter = 0;
+      let score = 0;
+      let startTime;
+      let feedback = document.getElementById("feedback");
+
+      function startTimer() {
+        // set the start time
+        startTime = Date.now();
         askQuestion();
       }
-    }
 
-    function endQuiz() {
-      const endTime = new Date();
-      const timeTaken = (endTime - startTime) / 1000;
-      quizContainer.innerHTML = `You answered ${correctAnswers} out of 10 questions correctly in ${timeTaken.toFixed(1)} seconds.`;
-      document.getElementById("submit-answer").style.display = "none";
-    }
-  </script>
-  <br>
-</body>
+      function askQuestion() {
+        if (counter < 10) {
+          // generate two random numbers
+          let num1 = Math.floor(Math.random() * 11);
+          let num2 = Math.floor(Math.random() * 4) + 6;
+          let correctAnswer = num1 * num2;
+
+          // display the question
+          let question = document.getElementById("question");
+          question.innerHTML = num1 + " x " + num2 + " = ";
+
+          // get the user's answer
+          let userAnswer = document.getElementById("answerInput").value;
+          if (userAnswer == correctAnswer) {
+            score++;
+            feedback.innerHTML = "Correct!";
+          } else {
+            feedback.innerHTML = "Incorrect! The correct answer is " + correctAnswer + ".";
+          }
+
+          // clear the input field
+          document.getElementById("answerInput").value = "";
+
+          // increment the counter
+          counter++;
+
+          // ask the next question after 1 second
+          setTimeout(askQuestion, 1000);
+        } else {
+          // stop the timer and display the score
+          clearInterval(timerId);
+          let timeTaken = (Date.now() - startTime) / 1000;
+          let result = document.getElementById("result");
+          result.innerHTML = "You got " + score + " out of 10 in " + timeTaken.toFixed(1) + " seconds.";
+        }
+      }
+    </script>
+  </body>
 </html>
