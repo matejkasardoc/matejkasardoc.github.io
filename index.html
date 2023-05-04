@@ -2,13 +2,13 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Multiplication Game</title>
+    <title>Izkaži svoje poznavanje POŠTEVANKE!</title>
     <style>
       .question-container {
         display: flex;
         flex-direction: row;
-        align-items: left;
-        justify-content: left;
+        align-items: center;
+        justify-content: center;
       }
       .question {
         margin-right: 10px;
@@ -16,15 +16,15 @@
     </style>
   </head>
   <body>
-    <h1>Multiplication Game</h1>
-    <p>Type your answer in the box below and press Enter.</p>
+    <h1>POŠTEVANKA</h1>
+    <p>Vpiši svoj odgovor v okvirček in pritisni na vnosnico (tipko Enter).</p>
     <div class="question-container">
       <p class="question" id="question"></p>
       <input type="text" id="answer" autofocus>
     </div>
     <div id="score" style="display: none;">
-      <p>You got <span id="numCorrect"></span> out of <span id="numQuestions"></span> questions correct in <span id="timeTaken"></span> seconds.</p>
-      <button id="tryAgainBtn">Try again</button>
+      <p>Prav si odgovoril na <span id="numCorrect"></span> od <span id="numQuestions"></span> v <span id="timeTaken"></span> sekundah.</p>
+      <button id="tryAgainBtn">Poskusi znova</button>
     </div>
     <script>
       const MIN_MULTIPLIER_1 = 0;
