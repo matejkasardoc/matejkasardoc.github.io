@@ -20,7 +20,7 @@
     <p>V okvirček vpiši svoj odgovor in pritisni na vnosnico (tipko Enter).</p>
     <div class="question-container">
       <p class="question" id="question"></p>
-      <input type="text" id="answer" onkeyup="event.keyCode === 13 ? checkAnswer() : null" autofocus>
+      <input type="text" id="answer" onkeyup="checkAnswer(event)" autofocus>
     </div>
     <div id="score" style="display: none;">
       <p>Pravilno si odgovoril na <span id="numCorrect"></span> od <span id="numQuestions"></span> vprašanj v <span id="timeTaken"></span> sekundah.</p>
@@ -40,7 +40,6 @@
   let question = '';
 
   function init() {
-    document.getElementById('answer').addEventListener('keyup', function(event) { if (event.keyCode === 13) { checkAnswer(); } });
     document.getElementById('tryAgainBtn').addEventListener('click', resetGame);
     askQuestion();
   }
@@ -64,7 +63,7 @@
       if (numQuestions === 1) {
         startTime = new Date().getTime();
       }
-    } else {
+    }  else {
       const endTime = new Date().getTime();
       const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
       document.getElementById('numCorrect').textContent = numCorrect;
