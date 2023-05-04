@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Izkaži svoje poznavanje POŠTEVANKE!</title>
+    <title>Izkaži poznavanje POŠTEVANKE!</title>
     <style>
       .question-container {
         display: flex;
@@ -17,13 +17,13 @@
   </head>
   <body>
     <h1>POŠTEVANKA</h1>
-    <p>Vpiši svoj odgovor v okvirček in pritisni na vnosnico (tipko Enter).</p>
+    <p>V okvirček vpiši svoj odgovor in pritisni na vnosnico (tipko Enter).</p>
     <div class="question-container">
       <p class="question" id="question"></p>
       <input type="text" id="answer" autofocus>
     </div>
     <div id="score" style="display: none;">
-      <p>Prav si odgovoril na <span id="numCorrect"></span> od <span id="numQuestions"></span> v <span id="timeTaken"></span> sekundah.</p>
+      <p>Pravilno si odgovoril na <span id="numCorrect"></span> od <span id="numQuestions"></span> vprašanj v <span id="timeTaken"></span> sekundah.</p>
       <button id="tryAgainBtn">Poskusi znova</button>
     </div>
     <script>
@@ -90,6 +90,6 @@
       }
 
       init();
-     </script>
+    </script>
   </body>
 </html>
