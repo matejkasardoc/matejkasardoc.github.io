@@ -15,7 +15,9 @@
       }
     </style>
   </head>
-  <body>
+  <body bgcolor="#dbedff">
+    <center><table width="70%">
+      <tr><td></td><td bgcolor="#ffffff" padding="15px" spacing="15px">
     <h1>POŠTEVANKA</h1>
     <p>V okvirček vpiši svoj odgovor in pritisni na vnosnico (tipko Enter).</p>
     <div class="question-container">
@@ -47,48 +49,53 @@ const ALLOWED_MULTIPLIERS_1 = [0, 1, 2, 10];
     askQuestion();
   }
 
-  function askQuestion() {
-    if (numQuestions < NUM_QUESTIONS) {
-      let multiplier1;
-if (Math.random() < 0.9) {
-  multiplier1 = Math.floor(Math.random() * 7) + 3;
-} else {
-  multiplier1 = ALLOWED_MULTIPLIERS_1[Math.floor(Math.random() * ALLOWED_MULTIPLIERS_1.length)];
-}
+function askQuestion() {
+  if (numQuestions < NUM_QUESTIONS) {
+    let multiplier1, multiplier2;
+    do {
+      if (Math.random() < 0.9) {
+        multiplier1 = Math.floor(Math.random() * 7) + 3;
+      } else {
+        multiplier1 = ALLOWED_MULTIPLIERS_1[Math.floor(Math.random() * ALLOWED_MULTIPLIERS_1.length)];
+      }
+      multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
+    } while (questionList.includes(`${multiplier1} x ${multiplier2}`));
 
-      const multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
-      question = `Koliko je ${multiplier1} x ${multiplier2}?`;
-      document.getElementById('question').textContent = question;
-      numQuestions++;
-      document.getElementById('answer').value = '';
-      document.getElementById('answer').focus();
-      if (numQuestions === 1) {
-        startTime = new Date().getTime();
-      }
-    } else {
-      const endTime = new Date().getTime();
-      const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
-      document.getElementById('numCorrect').textContent = numCorrect;
-      document.getElementById('numQuestions').textContent = NUM_QUESTIONS;
-      document.getElementById('timeTaken').textContent = timeTaken;
-      document.getElementById('score').style.display = 'block';
-      document.getElementById('answer').removeEventListener('keyup', checkAnswer);
-      
-      const resultsContainer = document.createElement('div');
-      resultsContainer.innerHTML = `<h2>Tvoji odgovori:</h2>`;
-      
-      for (let i = 0; i < NUM_QUESTIONS; i++) {
-        const [multiplier1, multiplier2] = questionList[i].match(/\d+/g).map(Number);
-        const userAnswer = answers[i] || '';
-        const isCorrect = userAnswer === multiplier1 * multiplier2;
-        const result = document.createElement('p');
-        result.textContent = `${i + 1}. ${questionList[i]} Tvoj odgovor: ${userAnswer} ${isCorrect ? '✔️' : '❌'}`;
-        resultsContainer.appendChild(result);
-      }
-      
-      document.body.appendChild(resultsContainer);
+    const currentQuestion = `Koliko je ${multiplier1} x ${multiplier2}?`;
+    questionList.push(`${multiplier1} x ${multiplier2}`); // Add the question to the list of questions
+    question = currentQuestion; // Assign the current question to the question variable
+    document.getElementById('question').textContent = question;
+    numQuestions++;
+    document.getElementById('answer').value = '';
+    document.getElementById('answer').focus();
+    if (numQuestions === 1) {
+      startTime = new Date().getTime();
     }
+  } else {
+    const endTime = new Date().getTime();
+    const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+    document.getElementById('numCorrect').textContent = numCorrect;
+    document.getElementById('numQuestions').textContent = NUM_QUESTIONS;
+    document.getElementById('timeTaken').textContent = timeTaken;
+    document.getElementById('score').style.display = 'block';
+    document.getElementById('answer').removeEventListener('keyup', checkAnswer);
+
+    const resultsContainer = document.createElement('div');
+    resultsContainer.innerHTML = `<h2>Tvoji odgovori:</h2>`;
+
+    for (let i = 0; i < NUM_QUESTIONS; i++) {
+      const [multiplier1, multiplier2] = questionList[i].match(/\d+/g).map(Number);
+      const userAnswer = answers[i] || '';
+      const isCorrect = userAnswer === multiplier1 * multiplier2;
+      const result = document.createElement('p');
+      result.textContent = `${i + 1}. ${questionList[i]} Tvoj odgovor: ${userAnswer} ${isCorrect ? '✔️' : '❌'}`;
+      resultsContainer.appendChild(result);
+    }
+
+    document.body.appendChild(resultsContainer);
   }
+}
+  
 
   function checkAnswer(event) {
     if (event.keyCode === 13) {
@@ -117,5 +124,7 @@ const questionList = [];
 
   init();
 </script>
+       <br><br> </td><td></td></tr>
+      </table></center>
   </body>
 </html>
