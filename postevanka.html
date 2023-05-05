@@ -49,16 +49,18 @@ const ALLOWED_MULTIPLIERS_1 = [0, 1, 2, 10];
 
 function askQuestion() {
   if (numQuestions < NUM_QUESTIONS) {
-    let multiplier1;
-    if (Math.random() < 0.9) {
-      multiplier1 = Math.floor(Math.random() * 7) + 3;
-    } else {
-      multiplier1 = ALLOWED_MULTIPLIERS_1[Math.floor(Math.random() * ALLOWED_MULTIPLIERS_1.length)];
-    }
+    let multiplier1, multiplier2;
+    do {
+      if (Math.random() < 0.9) {
+        multiplier1 = Math.floor(Math.random() * 7) + 3;
+      } else {
+        multiplier1 = ALLOWED_MULTIPLIERS_1[Math.floor(Math.random() * ALLOWED_MULTIPLIERS_1.length)];
+      }
+      multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
+    } while (questionList.includes(`${multiplier1} x ${multiplier2}`));
 
-    const multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
     const currentQuestion = `Koliko je ${multiplier1} x ${multiplier2}?`;
-    questionList.push(currentQuestion); // Add the question to the list of questions
+    questionList.push(`${multiplier1} x ${multiplier2}`); // Add the question to the list of questions
     question = currentQuestion; // Assign the current question to the question variable
     document.getElementById('question').textContent = question;
     numQuestions++;
