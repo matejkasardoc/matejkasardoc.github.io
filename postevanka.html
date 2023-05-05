@@ -27,98 +27,111 @@
       <div id="questions"></div>
       <button id="tryAgainBtn">Poskusi znova</button>
     </div>
-    <script>
-const MIN_MULTIPLIER_1 = 0;
-const MAX_MULTIPLIER_1 = 9;
-const ALLOWED_MULTIPLIERS_1 = [0, 1, 2, 3, 4, 10];
-const MIN_MULTIPLIER_2 = 0;
-const MAX_MULTIPLIER_2 = 10;
-const NUM_QUESTIONS = 10;
+<script>
+  function showResults() {
+    var form = document.forms.quiz;
+    var elements = form.elements;
+    var numOfQuestions = elements.length - 1;
+    var numOfCorrectAnswers = 0;
+    var answers = [];
+    var answerText = "";
 
-let numCorrect = 0;
-let numQuestions = 0;
-let startTime = 0;
-let question = '';
-const answers = [];
-
-function init() {
-  document.getElementById('answer').addEventListener('keyup', checkAnswer);
-  document.getElementById('tryAgainBtn').addEventListener('click', resetGame);
-  askQuestion();
-}
-
-function askQuestion() {
-  if (numQuestions < NUM_QUESTIONS) {
-    let multiplier1;
-    const rand = Math.random();
-    if (rand < 0.6) {
-      multiplier1 = Math.floor(Math.random() * (MAX_MULTIPLIER_1 - 6 + 1) + 6);
-    } else if (rand < 0.9) {
-      multiplier1 = ALLOWED_MULTIPLIERS_1[Math.floor(Math.random() * ALLOWED_MULTIPLIERS_1.length)];
-    } else {
-      multiplier1 = Math.floor(Math.random() * 3) + 7;
-    }
-
-    const multiplier2 = Math.floor(Math.random() * (MAX_MULTIPLIER_2 - MIN_MULTIPLIER_2 + 1) + MIN_MULTIPLIER_2);
-    question = `Koliko je ${multiplier1} x ${multiplier2}?`;
-    document.getElementById('question').textContent = question;
-    numQuestions++;
-    document.getElementById('answer').value = '';
-    document.getElementById('answer').focus();
-    if (numQuestions === 1) {
-      startTime = new Date().getTime();
-    }
-  } else {
-    const endTime = new Date().getTime();
-    const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
-    document.getElementById('numCorrect').textContent = numCorrect;
-    document.getElementById('numQuestions').textContent = NUM_QUESTIONS;
-    document.getElementById('timeTaken').textContent = timeTaken;
-    document.getElementById('score').style.display = 'block';
-    document.getElementById('answer').removeEventListener('keyup', checkAnswer);
-    
-    const resultsContainer = document.createElement('div');
-    resultsContainer.innerHTML = `<h2>Tvoji odgovori:</h2>`;
-    
-    for (let i = 0; i < NUM_QUESTIONS; i++) {
-      const [multiplier1, multiplier2] = questionList[i].match(/\d+/g).map(Number);
-      const userAnswer = answers[i] || '';
-      const isCorrect = userAnswer === multiplier1 * multiplier2;
-      const result = document.createElement('p');
-      result.textContent = `${i + 1}. ${questionList[i]} Tvoj odgovor: ${userAnswer} ${isCorrect ? '✔️' : '❌'}`;
-      resultsContainer.appendChild(result);
-    }
-    
-    document.body.appendChild(resultsContainer);
-  }
-}
-
-function checkAnswer(event) {
-  if (event.keyCode === 13) {
-    const answer = parseInt(document.getElementById('answer').value);
-    if (!isNaN(answer)) {
-      const [multiplier1, multiplier2] = question.match(/\d+/g).map(Number);
+    for (var i = 0; i < numOfQuestions; i++) {
+      var answer = elements[i].value;
       answers.push(answer);
-      if (answer === multiplier1 * multiplier2) {
-        numCorrect++;
+
+      var answerIndex = i + 1;
+      answerText += "Question " + answerIndex + ": " + answer + " ";
+
+      var isAnswerCorrect = checkAnswer(answerIndex, answer);
+      if (isAnswerCorrect) {
+        numOfCorrectAnswers++;
+        answerText += "<span style='color:green'>&#10003;</span>";
+      } else {
+        answerText += "<span style='color:red'>&#10005;</span>";
       }
-      askQuestion();
+
+      answerText += "<br>";
+    }
+
+    var score = numOfCorrectAnswers / numOfQuestions * 100;
+    score = score.toFixed(2);
+
+    var resultText = "You got " + numOfCorrectAnswers + " out of " + numOfQuestions + " questions correct.<br>Your score is " + score + "%. <br><br>";
+
+    var resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = resultText + answerText;
+
+    var scoreDiv = document.getElementById("score");
+    var numCorrectDiv = document.getElementById("numCorrect");
+    var numQuestionsDiv = document.getElementById("numQuestions");
+    var timeTakenDiv = document.getElementById("timeTaken");
+    var questionsDiv = document.getElementById("questions");
+
+    numCorrectDiv.innerHTML = numOfCorrectAnswers;
+    numQuestionsDiv.innerHTML = numOfQuestions;
+    timeTakenDiv.innerHTML = timeTaken;
+    questionsDiv.innerHTML = answerText;
+
+    scoreDiv.style.display = "block";
+  }
+
+  function checkAnswer(questionNumber, answer) {
+    var correctAnswers = {
+      "1": "b",
+      "2": "a",
+      "3": "c",
+      "4": "d",
+      "5": "a"
+    };
+
+    if (correctAnswers[questionNumber] === answer) {
+      return true;
+    } else {
+      return false;
     }
   }
-}
-      
-function resetGame() {
-  numCorrect = 0;
-  numQuestions = 0;
-  startTime = 0;
-  question = '';
-  document.getElementById('score').style.display = 'none';
-  askQuestion();
-  location.reload(); // Reload the page
-}
-const questionList = [];
 
-  init();
+  var timeTaken = 0;
+
+  function startTimer() {
+    var timerDiv = document.getElementById("timer");
+    var minutes = 0;
+    var seconds = 0;
+
+    setInterval(function() {
+      seconds++;
+      if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+      }
+
+      timeTaken = minutes * 60 + seconds;
+
+      var timeTakenText = "";
+      if (minutes > 0) {
+        timeTakenText += minutes + " min ";
+      }
+      timeTakenText += seconds + " sec";
+
+      timerDiv.innerHTML = timeTakenText;
+    }, 1000);
+  }
+
+  startTimer();
+
+  var form = document.forms.quiz;
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    showResults();
+  });
+
+  var tryAgainBtn = document.getElementById("tryAgainBtn");
+  tryAgainBtn.addEventListener("click", function() {
+    location.reload();
+  });
 </script>
+
+    <div id="result"></div>
   </body>
 </html>
