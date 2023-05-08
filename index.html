@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Quiz</title>
+	<title>Kviz</title>
 </head>
 <body>
-	<h1>Quiz</h1>
-	<p>Answer the following questions:</p>
+	<h1>Kviz</h1>
+	<p>Odgovori na vprašanja:</p>
 
 	<!-- Questions about squares of random numbers -->
-	<p>What is the square of <span id="rand1"></span>?</p>
+	<p>Koliko je kvadrat od <span id="rand1"></span>?</p>
 	<input type="text" id="rand1-answer">
-	<p>What is the square of <span id="rand2"></span>?</p>
+	<p>Koliko je kvadrat od <span id="rand2"></span>?</p>
 	<input type="text" id="rand2-answer">
-	<p>What is the square of <span id="rand3"></span>?</p>
+	<p>Koliko je kvadrat od <span id="rand3"></span>?</p>
 	<input type="text" id="rand3-answer">
-	<p>What is the square of <span id="rand4"></span>?</p>
+	<p>Koliko je kvadrat od <span id="rand4"></span>?</p>
 	<input type="text" id="rand4-answer">
-	<p>What is the square of <span id="rand5"></span>?</p>
+	<p>Koliko je kvadrat od <span id="rand5"></span>?</p>
 	<input type="text" id="rand5-answer">
 
 	<!-- Questions about square roots of perfect squares -->
-	<p>What is the square root of <span id="root1"></span>?</p>
+	<p>Koliko je kvadratni koren od <span id="root1"></span>?</p>
 	<input type="text" id="root1-answer">
-	<p>What is the square root of <span id="root2"></span>?</p>
+	<p>Koliko je kvadratni koren od <span id="root2"></span>?</p>
 	<input type="text" id="root2-answer">
-	<p>What is the square root of <span id="root3"></span>?</p>
+	<p>Koliko je kvadratni koren od <span id="root3"></span>?</p>
 	<input type="text" id="root3-answer">
-	<p>What is the square root of <span id="root4"></span>?</p>
+	<p>Koliko je kvadratni koren od <span id="root4"></span>?</p>
 	<input type="text" id="root4-answer">
-	<p>What is the square root of <span id="root5"></span>?</p>
+	<p>Koliko je kvadratni koren od <span id="root5"></span>?</p>
 	<input type="text" id="root5-answer">
 
-	<button onclick="resetQuiz()">Reset Quiz</button>
+	<button onclick="resetQuiz()">Poskusi ponovno</button>
 
 	<!-- JavaScript code to generate random numbers and perfect squares -->
 	<script>
@@ -116,7 +116,145 @@ document.getElementById("root5").textContent = nums[9];
 		// Reset the score
 		score = 0;
 	}
+// Initialize score variable
+let score = 0;
+
+// Function to check the user's answers
+function checkAnswers() {
+  // Get the user's answers
+  const rand1Answer = document.getElementById("rand1-answer").value;
+  const rand2Answer = document.getElementById("rand2-answer").value;
+  const rand3Answer = document.getElementById("rand3-answer").value;
+  const rand4Answer = document.getElementById("rand4-answer").value;
+  const rand5Answer = document.getElementById("rand5-answer").value;
+  const root1Answer = document.getElementById("root1-answer").value;
+  const root2Answer = document.getElementById("root2-answer").value;
+  const root3Answer = document.getElementById("root3-answer").value;
+  const root4Answer = document.getElementById("root4-answer").value;
+  const root5Answer = document.getElementById("root5-answer").value;
+
+  // Check the user's answers
+  if (rand1Answer == nums[0] ** 2) {
+    score += 1;
+  }
+  if (rand2Answer == nums[1] ** 2) {
+    score += 1;
+  }
+  if (rand3Answer == nums[2] ** 2) {
+    score += 1;
+  }
+  if (rand4Answer == nums[3] ** 2) {
+    score += 1;
+  }
+  if (rand5Answer == nums[4] ** 2) {
+    score += 1;
+  }
+  if (root1Answer == Math.sqrt(nums[5])) {
+    score += 1;
+  }
+  if (root2Answer == Math.sqrt(nums[6])) {
+    score += 1;
+  }
+  if (root3Answer == Math.sqrt(nums[7])) {
+    score += 1;
+  }
+  if (root4Answer == Math.sqrt(nums[8])) {
+    score += 1;
+  }
+  if (root5Answer == Math.sqrt(nums[9])) {
+    score += 1;
+  }
+
+  // Display the score
+  alert(`You scored ${score} out of 10!`);
+}
+
+// Reset the quiz
+function resetQuiz() {
+  // Clear the input fields
+  document.getElementById("rand1-answer").value = "";
+  document.getElementById("rand2-answer").value = "";
+  document.getElementById("rand3-answer").value = "";
+  document.getElementById("rand4-answer").value = "";
+  document.getElementById("rand5-answer").value = "";
+  document.getElementById("root1-answer").value = "";
+  document.getElementById("root2-answer").value = "";
+  document.getElementById("root3-answer").value = "";
+  document.getElementById("root4-answer").value = "";
+  document.getElementById("root5-answer").value = "";
+
+  // Generate new numbers
+  usedNums = [];
+  randNums = [];
+  rootNums = [];
+
+  var randNums1 = [];
+  for (var i = 0; i < 1; i++) {
+    randNums1.push(Math.floor(Math.random() * 11));
+  }
+
+  var randNums2 = [];
+  for (var i = 0; i < 3; i++) {
+    randNums2.push(Math.floor(Math.random() * 9) + 11);
+  }
+
+  var randNums3 = [];
+  for (var i = 0; i < 1; i++) {
+    randNums3.push(Math.floor(Math.random() * 6) + 20);
+ // Check the answers and update the score
+if (rand1Answer == nums[0]**2) {
+	score++;
+}
+if (rand2Answer == nums[1]**2) {
+	score++;
+}
+if (rand3Answer == nums[2]**2) {
+	score++;
+}
+if (rand4Answer == nums[3]**2) {
+	score++;
+}
+if (rand5Answer == nums[4]**2) {
+	score++;
+}
+if (root1Answer == Math.sqrt(nums[5])) {
+	score++;
+}
+if (root2Answer == Math.sqrt(nums[6])) {
+	score++;
+}
+if (root3Answer == Math.sqrt(nums[7])) {
+	score++;
+}
+if (root4Answer == Math.sqrt(nums[8])) {
+	score++;
+}
+if (root5Answer == Math.sqrt(nums[9])) {
+	score++;
+}
+
+// Display the final score
+alert("Pravilno si odgovoril na " + score + " od 10!");
+
+// Disable the input fields and submit button
+document.getElementById("rand1-answer").disabled = true;
+document.getElementById("rand2-answer").disabled = true;
+document.getElementById("rand3-answer").disabled = true;
+document.getElementById("rand4-answer").disabled = true;
+document.getElementById("rand5-answer").disabled = true;
+document.getElementById("root1-answer").disabled = true;
+document.getElementById("root2-answer").disabled = true;
+document.getElementById("root3-answer").disabled = true;
+document.getElementById("root4-answer").disabled = true;
+document.getElementById("root5-answer").disabled = true;
+document.getElementById("submit-btn").disabled = true;
+  }
+
+// Function to reset the quiz
+function resetQuiz() {
+location.reload();
+}
 	
 </script>
-	</body>
+</body>
 </html>
