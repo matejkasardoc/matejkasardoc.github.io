@@ -31,55 +31,92 @@
 	<p>What is the square root of <span id="root5"></span>?</p>
 	<input type="text" id="root5-answer">
 
+	<button onclick="resetQuiz()">Reset Quiz</button>
+
 	<!-- JavaScript code to generate random numbers and perfect squares -->
 	<script>
-		// Generate 5 random numbers between 0 and 25
+		var usedNums = [];
 		var randNums = [];
-		for (var i = 0; i < 5; i++) {
-			randNums.push(Math.floor(Math.random() * 26));
-		}
-		document.getElementById("rand1").textContent = randNums[0];
-		document.getElementById("rand2").textContent = randNums[1];
-		document.getElementById("rand3").textContent = randNums[2];
-		document.getElementById("rand4").textContent = randNums[3];
-		document.getElementById("rand5").textContent = randNums[4];
-
-		// Generate 5 perfect squares between 0 and 625
 		var rootNums = [];
-		for (var i = 0; i < 5; i++) {
-			var root = Math.floor(Math.sqrt(Math.floor(Math.random() * 626))) ** 2;
-			rootNums.push(root);
-		}
-		document.getElementById("root1").textContent = rootNums[0];
-		document.getElementById("root2").textContent = rootNums[1];
-		document.getElementById("root3").textContent = rootNums[2];
-		document.getElementById("root4").textContent = rootNums[3];
-		document.getElementById("root5").textContent = rootNums[4];
+		
+		// Generate 5 random numbers between 0 and 10
+var randNums1 = [];
+for (var i = 0; i < 1; i++) {
+  randNums1.push(Math.floor(Math.random() * 11));
+}
 
-		// Check answers when enter key is pressed
-		var inputs = document.querySelectorAll("input");
-		for (var i = 0; i < inputs.length; i++) {
-			inputs[i].addEventListener("keyup", function(event) {
-				if (event.key === "Enter") {
-					var answer = this.value;
-var question = this.previousElementSibling.textContent;
-var correctAnswer;
-if (question.includes("square of")) {
-var num = parseInt(question.match(/\d+/)[0]);
-correctAnswer = num ** 2;
-} else {
-var num = parseInt(question.match(/\d+/)[0]);
-correctAnswer = Math.sqrt(num);
+// Generate 15 random numbers between 11 and 19
+var randNums2 = [];
+for (var i = 0; i < 3; i++) {
+  randNums2.push(Math.floor(Math.random() * 9) + 11);
 }
-if (answer == correctAnswer) {
-alert("Correct!");
-} else {
-alert("Incorrect. The correct answer is " + correctAnswer + ".");
+
+// Generate 5 random numbers between 20 and 25
+var randNums3 = [];
+for (var i = 0; i < 1; i++) {
+  randNums3.push(Math.floor(Math.random() * 6) + 20);
 }
+
+// Generate 1 perfect square between 0 and 100
+var rootNums1 = [];
+for (var i = 0; i < 1; i++) {
+  var root = Math.floor(Math.sqrt(Math.floor(Math.random() * 101))) ** 2;
+  rootNums1.push(root);
 }
-});
+
+// Generate 3 perfect squares between 101 and 399
+var rootNums2 = [];
+for (var i = 0; i < 3; i++) {
+  var root = Math.floor(Math.sqrt(Math.floor(Math.random() * 299) + 101)) ** 2;
+  rootNums2.push(root);
 }
+
+// Generate 1 perfect square between 400 and 625
+var rootNums3 = [];
+for (var i = 0; i < 1; i++) {
+  var root = Math.floor(Math.sqrt(Math.floor(Math.random() * 226) + 400)) ** 2;
+  rootNums3.push(root);
+}
+
+// Merge all random numbers and perfect squares into one array
+var nums = randNums1.concat(randNums2, randNums3, rootNums1, rootNums2, rootNums3);
+
+// Shuffle the array
+for (var i = nums.length - 1; i > 0; i--) {
+  var j = Math.floor(Math.random() * (i + 1));
+  var temp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = temp;
+}
+
+// Update the HTML elements with the randomized numbers
+document.getElementById("rand1").textContent = nums[0];
+document.getElementById("rand2").textContent = nums[1];
+document.getElementById("rand3").textContent = nums[2];
+document.getElementById("rand4").textContent = nums[3];
+document.getElementById("rand5").textContent = nums[4];
+document.getElementById("root1").textContent = nums[5];
+document.getElementById("root2").textContent = nums[6];
+document.getElementById("root3").textContent = nums[7];
+document.getElementById("root4").textContent = nums[8];
+document.getElementById("root5").textContent = nums[9];
+
+		// Clear the input fields
+		document.getElementById("rand1-answer").value = "";
+		document.getElementById("rand2-answer").value = "";
+		document.getElementById("rand3-answer").value = "";
+		document.getElementById("rand4-answer").value = "";
+		document.getElementById("rand5-answer").value = "";
+		document.getElementById("root1-answer").value = "";
+		document.getElementById("root2-answer").value = "";
+		document.getElementById("root3-answer").value = "";
+		document.getElementById("root4-answer").value = "";
+		document.getElementById("root5-answer").value = "";
+
+		// Reset the score
+		score = 0;
+	}
+	
 </script>
-
-</body>
+	</body>
 </html>
