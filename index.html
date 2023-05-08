@@ -1,115 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Izkaži poznavanje KVADRATOV!</title>
-    <style>
-      .question-container {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-      }
-      .question {
-        margin-right: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>KVADRATI</h1>
-    <p>V okvirček vpiši svoj odgovor in pritisni na vnosnico (tipko Enter).</p>
-    <div class="question-container">
-      <p class="question" id="question"></p>
-      <input type="text" id="answer" onkeyup="checkAnswer(event)" autofocus>
-    </div>
-    <div id="score" style="display: none;">
-      <p>Pravilno si odgovoril na <span id="numCorrect"></span> od <span id="numQuestions"></span> vprašanj v <span id="timeTaken"></span> sekundah.</p>
-      <div id="answers"></div>
-      <button id="tryAgainBtn">Poskusi znova</button>
-    </div>
-    <script>
-  const MIN_SQUARE = 0;
-  const MAX_SQUARE_1 = 10;
-  const MAX_SQUARE_2 = 20;
-  const MAX_SQUARE_3 = 25;
-  const NUM_QUESTIONS = 10;
+<head>
+	<title>Quiz</title>
+</head>
+<body>
+	<h1>Quiz</h1>
+	<p>Answer the following questions:</p>
 
-  let numCorrect = 0;
-  let numQuestions = 0;
-  let startTime = 0;
-  let question = '';
+	<!-- Questions about squares of random numbers -->
+	<p>What is the square of <span id="rand1"></span>?</p>
+	<input type="text" id="rand1-answer">
+	<p>What is the square of <span id="rand2"></span>?</p>
+	<input type="text" id="rand2-answer">
+	<p>What is the square of <span id="rand3"></span>?</p>
+	<input type="text" id="rand3-answer">
+	<p>What is the square of <span id="rand4"></span>?</p>
+	<input type="text" id="rand4-answer">
+	<p>What is the square of <span id="rand5"></span>?</p>
+	<input type="text" id="rand5-answer">
 
-  function init() {
-    document.getElementById('tryAgainBtn').addEventListener('click', resetGame);
-    askQuestion();
-  }
+	<!-- Questions about square roots of perfect squares -->
+	<p>What is the square root of <span id="root1"></span>?</p>
+	<input type="text" id="root1-answer">
+	<p>What is the square root of <span id="root2"></span>?</p>
+	<input type="text" id="root2-answer">
+	<p>What is the square root of <span id="root3"></span>?</p>
+	<input type="text" id="root3-answer">
+	<p>What is the square root of <span id="root4"></span>?</p>
+	<input type="text" id="root4-answer">
+	<p>What is the square root of <span id="root5"></span>?</p>
+	<input type="text" id="root5-answer">
 
-  function askQuestion() {
-    if (numQuestions < NUM_QUESTIONS) {
-      let square;
-      const random = Math.random();
-      if (random < 0.6) {
-        square = Math.floor(Math.random() * (MAX_SQUARE_2 - MAX_SQUARE_1 + 1) + MAX_SQUARE_1);
-      } else if (random < 0.8) {
-        square = Math.floor(Math.random() * (MAX_SQUARE_3 - MAX_SQUARE_2 + 1) + MAX_SQUARE_2);
-      } else {
-        square = Math.floor(Math.random() * (MAX_SQUARE_1 - MIN_SQUARE + 1) + MIN_SQUARE);
-      }
-      question = `Koliko je ${square}²?`;
-      document.getElementById('question').textContent = question;
-      numQuestions++;
-      document.getElementById('answer').value = '';
-      document.getElementById('answer').focus();
-      if (numQuestions === 1) {
-        startTime = new Date().getTime();
-      }
-    }  else {
-      const endTime = new Date().getTime();
-      const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
-      document.getElementById('numCorrect').textContent = numCorrect;
-      document.getElementById('numQuestions').textContent = NUM_QUESTIONS;
-      document.getElementById('timeTaken').textContent = timeTaken;
-      document.getElementById('score').style.display = 'block';
-      document.getElementById('answer').removeEventListener('keyup', checkAnswer);
-      document.getElementById('answersList').style.display = 'block';
-      document.getElementById('answersList').textContent = getAnswersList();
-    }
-  }
+	<!-- JavaScript code to generate random numbers and perfect squares -->
+	<script>
+		// Generate 5 random numbers between 0 and 25
+		var randNums = [];
+		for (var i = 0; i < 5; i++) {
+			randNums.push(Math.floor(Math.random() * 26));
+		}
+		document.getElementById("rand1").textContent = randNums[0];
+		document.getElementById("rand2").textContent = randNums[1];
+		document.getElementById("rand3").textContent = randNums[2];
+		document.getElementById("rand4").textContent = randNums[3];
+		document.getElementById("rand5").textContent = randNums[4];
 
-  function checkAnswer(event) {
-    if (event.keyCode === 13) {
-      const answer = parseInt(document.getElementById('answer').value);
-      if (!isNaN(answer)) {
-        const square = parseInt(question.match(/\d+/g)[0]);
-        if (answer === square ** 2) {
-          numCorrect++;
-        }
-        document.getElementById('answersList').innerHTML += `<li><strong>Vprašanje:</strong> ${question} <strong>Tvoj odgovor:</strong> ${answer} <strong>Pravilni odgovor:</strong> ${square ** 2}</li>`;
-        askQuestion();
-      }
-    }
-  }
+		// Generate 5 perfect squares between 0 and 625
+		var rootNums = [];
+		for (var i = 0; i < 5; i++) {
+			var root = Math.floor(Math.sqrt(Math.floor(Math.random() * 626))) ** 2;
+			rootNums.push(root);
+		}
+		document.getElementById("root1").textContent = rootNums[0];
+		document.getElementById("root2").textContent = rootNums[1];
+		document.getElementById("root3").textContent = rootNums[2];
+		document.getElementById("root4").textContent = rootNums[3];
+		document.getElementById("root5").textContent = rootNums[4];
 
-  function resetGame() {
-    numCorrect = 0;
-    numQuestions = 0;
-    startTime = 0;
-    question = '';
-    document.getElementById('score').style.display = 'none';
-    document.getElementById('answersList').style.display = 'none';
-    document.getElementById('answersList').innerHTML = '';
-    askQuestion();
-  }
-
-  function getAnswersList() {
-    let answersList = '';
-    const answers = document.querySelectorAll('#answersList li');
-    answers.forEach((answer) => {
-      answersList += answer.innerHTML + '<br>';
-    });
-    return answersList;
-  }
-  init();
+		// Check answers when enter key is pressed
+		var inputs = document.querySelectorAll("input");
+		for (var i = 0; i < inputs.length; i++) {
+			inputs[i].addEventListener("keyup", function(event) {
+				if (event.key === "Enter") {
+					var answer = this.value;
+var question = this.previousElementSibling.textContent;
+var correctAnswer;
+if (question.includes("square of")) {
+var num = parseInt(question.match(/\d+/)[0]);
+correctAnswer = num ** 2;
+} else {
+var num = parseInt(question.match(/\d+/)[0]);
+correctAnswer = Math.sqrt(num);
+}
+if (answer == correctAnswer) {
+alert("Correct!");
+} else {
+alert("Incorrect. The correct answer is " + correctAnswer + ".");
+}
+}
+});
+}
 </script>
-  </body>
+
+</body>
 </html>
