@@ -12,45 +12,7 @@
   </head>
   <body>
     <h1>Squares and Square Roots Quiz</h1>
-    <div id="quiz-container">
-      <div id="question-container">
-        <p id="question"></p>
-        <input type="text" id="answer-box" onkeydown="checkAnswer(event)">
-      </div>
-      <button id="submit-button" onclick="submitAnswer()">Submit</button>
-      <button id="restart-button" onclick="restartQuiz()">Restart</button>
-    </div>
-    <script>
-	    function finishQuiz() {
-    // Hide the quiz container
-    document.getElementById('quiz-container').style.display = 'none';
+    <iframe name='proprofs' id='proprofs' width='450' height='615' frameborder=0 marginwidth=0 marginheight=0 src='https://www.proprofs.com/quiz-school/story.php?title=perfect-squares-130&ew=430'></iframe><div style='font-size:10px; font-family:Arial, Helvetica, sans-serif; text-align:left;'><a href='https://www.proprofs.com/quiz-school/solutions/assessment-software/' title='ProProfs Online Assessment software' target='_blank'>ProProfs Online Assessment software</a></div>
 
-    // Display the results
-    const resultsContainer = document.createElement('div');
-    const numCorrect = answers.filter(answer => answer.correct).length;
-    const numWrong = answers.filter(answer => !answer.correct).length;
-    resultsContainer.innerHTML = `
-      <h2>Results:</h2>
-      <p>Number of correct answers: ${numCorrect}</p>
-      <p>Number of wrong answers: ${numWrong}</p>
-      <h3>Answers:</h3>
-    `;
-    for (const answer of answers) {
-      const questionText = answer.question.type === 'square' ? `What is the square of ${answer.question.value}?` : `What is the square root of ${answer.question.value}?`;
-      resultsContainer.innerHTML += `
-        <p>${questionText} Your answer: ${answer.answer}. ${answer.correct ? 'Correct.' : 'Wrong.'}</p>
-      `;
-    }
-    document.body.appendChild(resultsContainer);
-  }
-
-  // Restart the quiz by reloading the page
-  function restartQuiz() {
-    location.reload();
-  }
-
-  // Start the quiz by displaying the first question
-  displayNextQuestion();
-</script>
   </body>
 </html>
